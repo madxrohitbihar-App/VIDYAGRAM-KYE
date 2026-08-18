@@ -491,9 +491,9 @@
     <div id="authScreen" style="display: none;">
         <div class="card">
             <h2>Device Verification</h2>
-            <p style="color:var(--text-secondary); font-size: 13px; margin-bottom: 20px;">Get Key par click karke 15-letter ka access token generate karein.</p>
+            <p style="color:var(--text-secondary); font-size: 13px; margin-bottom: 20px;">Please enter your access key obtained from Get Key to unlock the portal (24 Hours Validity).</p>
             
-            <input type="text" id="accessKeyInput" class="key-input" placeholder="ENTER ACCESS TOKEN">
+            <input type="text" id="accessKeyInput" class="key-input" placeholder="ENTER ACCESS KEY">
             
             <button class="btn btn-get" onclick="openAroLinks()">
                 <i class="fa-solid fa-key"></i> Get Key
@@ -572,7 +572,7 @@
             }
         })();
 
-        // 15-character random secret key generator
+        // 15-character secret key generator (Hidden from user display text)
         function generateSecretKey() {
             const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             let generatedKey = '';
@@ -588,7 +588,6 @@
             const freshKey = generateSecretKey();
             localStorage.setItem("expected_app_key", freshKey);
 
-            // Updated Get-Key website link set here
             const targetUrl = "https://madxrohitbihar-app.github.io/Gyanbindu-key/?key=" + freshKey;
             const apiUrl = `https://arolinks.com/api?api=${apiToken}&url=${encodeURIComponent(targetUrl)}`;
 
@@ -612,7 +611,7 @@
                 });
         }
 
-        // Verify Key Logic
+        // Verify Key Logic with Used-Key Protection
         function verifyUserKey() {
             const userKey = document.getElementById("accessKeyInput").value.trim().toUpperCase();
             const expectedKey = localStorage.getItem("expected_app_key");
@@ -621,21 +620,24 @@
 
             if (!userKey) {
                 msgDiv.style.color = "#ff4d4d";
-                msgDiv.innerText = "Please enter access token!";
+                msgDiv.innerText = "Please enter access key!";
                 return;
             }
 
+            // Check if key was already used
             if (usedKeys.includes(userKey)) {
                 msgDiv.style.color = "#ff4d4d";
-                msgDiv.innerText = "This token has already been used!";
+                msgDiv.innerText = "This token has already been used! Please generate a new key.";
                 return;
             }
 
-            // Match with generated 15-character key or allow valid 15-char fallback format
+            // Validate 15-character key match or valid 15-char fallback format
             if ((expectedKey && userKey === expectedKey) || userKey.length === 15) {
+                // Mark key as used so it cannot be reused
                 usedKeys.push(userKey);
                 localStorage.setItem("used_app_keys", JSON.stringify(usedKeys));
 
+                // Grant 24 Hours Access
                 const twentyFourHours = 24 * 60 * 60 * 1000;
                 const expiryTimestamp = new Date().getTime() + twentyFourHours;
                 localStorage.setItem("app_expiry_time", expiryTimestamp);
@@ -648,7 +650,7 @@
                 }
             } else {
                 msgDiv.style.color = "#ff4d4d";
-                msgDiv.innerText = "Invalid Access Token! Must be 15 characters.";
+                msgDiv.innerText = "Invalid Access Token!";
             }
         }
 

@@ -190,7 +190,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            padding-bottom: 40px;
+            padding-bottom: 90px;
         }
 
         /* Header */
@@ -293,6 +293,16 @@
             gap: 12px;
         }
 
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active-tab {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .app-card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
@@ -360,6 +370,27 @@
             margin-left: 8px;
         }
 
+        .fav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-neon);
+            color: var(--text-secondary);
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .fav-btn.active {
+            color: var(--neon-pink);
+            border-color: rgba(255, 0, 127, 0.4);
+            background: rgba(255, 0, 127, 0.1);
+        }
+
         .open-btn {
             background: rgba(0, 242, 254, 0.1);
             border: 1px solid rgba(0, 242, 254, 0.3);
@@ -377,6 +408,47 @@
             color: #fff;
             border-color: transparent;
             box-shadow: var(--shadow-neon);
+        }
+
+        /* Bottom Nav Footer */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(5, 5, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid var(--border-neon);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 102;
+        }
+
+        .nav-item {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 16px;
+            transition: 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item.active {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
         }
 
         /* Modal */
@@ -531,19 +603,20 @@
         <div class="header-search">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search servers..." onkeyup="filterApps()">
+                <input type="text" id="searchInput" placeholder="Search apps..." onkeyup="filterApps()">
             </div>
         </div>
 
         <div class="section-title">
             <div class="title-with-dot">
                 <span class="live-dot"></span>
-                <span>All Active App</span>
+                <span id="section-label">All Active App</span>
             </div>
-            <span id="active-count" style="color: var(--neon-cyan);">1 Available</span>
+            <span id="active-count" style="color: var(--neon-cyan);">3 Available</span>
         </div>
 
-        <div class="app-list" id="active-apps-list">
+        <!-- TAB 1: ACTIVE APPS -->
+        <div class="app-list tab-content active-tab" id="tab-active">
             <div class="app-card" data-name="madx gyanbindu">
                 <div class="app-info">
                     <img src="https://i.postimg.cc/x1M2fWsT/image-search-1787071979117.png" class="app-icon" alt="Madx Gyanbindu">
@@ -553,9 +626,79 @@
                     </div>
                 </div>
                 <div class="app-actions">
+                    <button class="fav-btn" onclick="toggleFavorite(this, 'Madx Gyanbindu')"><i class="fa-solid fa-heart"></i></button>
                     <a href="https://studyapkmod-appx-app.vercel.app/home?domainId=9a970464-56f6-41ca-a032-20a1c5eb7e20&domain=gyanbinduapi.appx.co.in&name=Gyan%20Bindu" class="open-btn" target="_blank">Open</a>
                 </div>
             </div>
+
+            <div class="app-card" data-name="samyank ias">
+                <div class="app-info">
+                    <img src="https://i.postimg.cc/6qz6PKnc/image-search-1787133051361.jpg" class="app-icon" alt="Samyank IAS">
+                    <div class="app-details">
+                        <span class="app-name">Samyank IAS</span>
+                        <span class="app-tag">Server Active</span>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <button class="fav-btn" onclick="toggleFavorite(this, 'Samyank IAS')"><i class="fa-solid fa-heart"></i></button>
+                    <a href="https://studyapkmod-appx-app.vercel.app/home?domainId=2187976a-7c8e-4703-9e45-6d95d63667ab&domain=samyakapi.teachx.in&name=Samayak%20IAS" class="open-btn" target="_blank">Open</a>
+                </div>
+            </div>
+
+            <div class="app-card" data-name="assh official">
+                <div class="app-info">
+                    <img src="https://i.postimg.cc/6qqF9xFb/image-search-1787133118405.png" class="app-icon" alt="ASSH Official">
+                    <div class="app-details">
+                        <span class="app-name">ASSH Official</span>
+                        <span class="app-tag">Server Active</span>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <button class="fav-btn" onclick="toggleFavorite(this, 'ASSH Official')"><i class="fa-solid fa-heart"></i></button>
+                    <a href="https://studyapkmod-appx-app.vercel.app/home?domainId=099bb5e8-85a2-41b0-a790-47eeb01d1b14&domain=aashapi.appx.co.in&name=Aash" class="open-btn" target="_blank">Open</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: UPCOMING APPS -->
+        <div class="app-list tab-content" id="tab-upcoming">
+            <div class="app-card" data-name="upcoming dummy app">
+                <div class="app-info">
+                    <img src="https://i.postimg.cc/767wxWNM/750582767-1017528391240334-3988665459253503214-n.webp" class="app-icon" alt="Upcoming App">
+                    <div class="app-details">
+                        <span class="app-name">Coming Soon Server</span>
+                        <span class="app-tag" style="color:var(--text-secondary);">Coming Soon</span>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <button class="fav-btn" onclick="toggleFavorite(this, 'Coming Soon Server')"><i class="fa-solid fa-heart"></i></button>
+                    <a href="#" class="open-btn" onclick="alert('Server is coming soon!'); return false;">Soon</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: FAVORITES -->
+        <div class="app-list tab-content" id="tab-favorites">
+            <div id="no-favorites-msg" style="text-align: center; color: var(--text-secondary); font-size: 13px; padding: 40px 0;">
+                No favorite apps saved yet.
+            </div>
+            <div id="favorites-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+
+        <!-- Bottom Navigation Footer -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="switchTab('active', this)">
+                <i class="fa-solid fa-rocket"></i>
+                <span>Active</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('upcoming', this)">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <span>Upcoming</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('favorites', this)">
+                <i class="fa-solid fa-heart"></i>
+                <span>Favorites</span>
+            </button>
         </div>
 
     </div>
@@ -570,9 +713,9 @@
             } else {
                 if(authScreen) authScreen.style.display = 'flex';
             }
+            loadFavoritesState();
         })();
 
-        // 15-character secret key generator (Hidden from user display text)
         function generateSecretKey() {
             const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             let generatedKey = '';
@@ -582,7 +725,6 @@
             return generatedKey;
         }
 
-        // Get Key handler via AroLinks
         function openAroLinks() {
             const apiToken = "828c34db80ec53e94e7174f5f52e0b274a38ab2d";
             const freshKey = generateSecretKey();
@@ -611,7 +753,6 @@
                 });
         }
 
-        // Verify Key Logic with Used-Key Protection
         function verifyUserKey() {
             const userKey = document.getElementById("accessKeyInput").value.trim().toUpperCase();
             const expectedKey = localStorage.getItem("expected_app_key");
@@ -624,20 +765,16 @@
                 return;
             }
 
-            // Check if key was already used
             if (usedKeys.includes(userKey)) {
                 msgDiv.style.color = "#ff4d4d";
                 msgDiv.innerText = "This token has already been used! Please generate a new key.";
                 return;
             }
 
-            // Validate 15-character key match or valid 15-char fallback format
             if ((expectedKey && userKey === expectedKey) || userKey.length === 15) {
-                // Mark key as used so it cannot be reused
                 usedKeys.push(userKey);
                 localStorage.setItem("used_app_keys", JSON.stringify(usedKeys));
 
-                // Grant 24 Hours Access
                 const twentyFourHours = 24 * 60 * 60 * 1000;
                 const expiryTimestamp = new Date().getTime() + twentyFourHours;
                 localStorage.setItem("app_expiry_time", expiryTimestamp);
@@ -654,11 +791,85 @@
             }
         }
 
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            btnElement.classList.add('active');
+
+            const label = document.getElementById('section-label');
+            const countLabel = document.getElementById('active-count');
+
+            if (tabName === 'active') {
+                document.getElementById('tab-active').classList.add('active-tab');
+                label.innerText = "All Active App";
+                countLabel.innerText = "3 Available";
+            } else if (tabName === 'upcoming') {
+                document.getElementById('tab-upcoming').classList.add('active-tab');
+                label.innerText = "All Upcoming Server";
+                countLabel.innerText = "Coming Soon";
+            } else if (tabName === 'favorites') {
+                document.getElementById('tab-favorites').classList.add('active-tab');
+                label.innerText = "All Saved Favorite";
+                countLabel.innerText = "Saved";
+                renderFavorites();
+            }
+        }
+
+        function toggleFavorite(btn, appName) {
+            btn.classList.toggle('active');
+            let favorites = JSON.parse(localStorage.getItem('app_favorites') || "[]");
+            
+            const card = btn.closest('.app-card');
+            const appData = {
+                name: appName,
+                html: card.outerHTML
+            };
+
+            const index = favorites.findIndex(item => item.name === appName);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(appData);
+            }
+            localStorage.setItem('app_favorites', JSON.stringify(favorites));
+        }
+
+        function loadFavoritesState() {
+            let favorites = JSON.parse(localStorage.getItem('app_favorites') || "[]");
+            const favNames = favorites.map(f => f.name);
+
+            document.querySelectorAll('.app-card').forEach(card => {
+                const nameEl = card.querySelector('.app-name');
+                if (nameEl && favNames.includes(nameEl.innerText.trim())) {
+                    const favBtn = card.querySelector('.fav-btn');
+                    if(favBtn) favBtn.classList.add('active');
+                }
+            });
+        }
+
+        function renderFavorites() {
+            let favorites = JSON.parse(localStorage.getItem('app_favorites') || "[]");
+            const container = document.getElementById('favorites-container');
+            const msg = document.getElementById('no-favorites-msg');
+
+            container.innerHTML = "";
+            if (favorites.length === 0) {
+                msg.style.display = 'block';
+            } else {
+                msg.style.display = 'none';
+                favorites.forEach(fav => {
+                    container.innerHTML += fav.html;
+                });
+            }
+        }
+
         function filterApps() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.app-card').forEach(card => {
+            const activeTab = document.querySelector('.tab-content.active-tab');
+            activeTab.querySelectorAll('.app-card').forEach(card => {
                 const name = card.getAttribute('data-name');
-                card.style.display = (name && name.includes(query)) ? 'flex' : 'none';
+                card.style.display = (!name || name.includes(query)) ? 'flex' : 'none';
             });
         }
 
